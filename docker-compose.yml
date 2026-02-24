@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: app_php_legacy
+    ports:
+      - "8099:80" # <-- Nuestro puerto web ganador
+    volumes:
+      - ./CityKnowPro2_SI:/var/www/html
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  db:
+    image: mysql:5.7
+    container_name: db_mysql_legacy
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: cityknow_db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: adminpassword
+    ports:
+      - "3310:3306" # <-- Nuestro puerto DB ganador
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: unless-stopped
+
+volumes:
+  db_data:
